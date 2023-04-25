@@ -60,6 +60,7 @@ def generate_search_urls_numbrasts(sqlite_file,instrument_id,current_datetime,se
         try:
             if telinst == 'SDSS':    telinst_search_term = 'SDSS'
             if telinst == 'MegaCam': telinst_search_term = 'CFHT%2FMegaCam'
+            if telinst == 'DECam':   telinst_search_term = 'CTIO-4m%2FDECam'
             conn = mcd.create_connection(sqlite_file)
             cursor = conn.cursor()
             mcd.output_log_entry(path_logfile,'Generating search URLs for numbered asteroids...')
@@ -163,6 +164,7 @@ def main():
         instrument_name = ''
         if telinst == 'SDSS': instrument_name = 'SDSS Imaging Camera'
         if telinst == 'MegaCam': instrument_name = 'MegaCam'
+        if telinst == 'DECam': instrument_name = 'DECam'
         current_datetime1 = datetime.datetime.today().strftime('%Y%m%d_%H%M%S')
         search_urls_master_filename      = search_urls_directory + 'search_urls_{:s}_{:s}_master.txt'.format(telinst,datetime.datetime.today().strftime('%Y%m%d_%H%M%S'))
         search_history_toingest_filename = search_urls_directory + 'search_history_{:s}_{:s}_toingest.txt'.format(telinst,datetime.datetime.today().strftime('%Y%m%d_%H%M%S'))
