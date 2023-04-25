@@ -65,7 +65,7 @@ def generate_search_urls_numbrasts(sqlite_file,instrument_id,current_datetime,se
             cursor = conn.cursor()
             mcd.output_log_entry(path_logfile,'Generating search URLs for numbered asteroids...')
             mcd.output_log_entry(path_logfile,'Retrieving list of numbered asteroids for searching...')
-            query = "SELECT sso.ssobject_id,sso.desig_number,sh.last_searched FROM ssobjects AS sso LEFT OUTER JOIN search_history AS sh ON sso.ssobject_id=sh.ssobject_id WHERE sso.desig_number IS NOT NULL AND sso.object_type='asteroid' AND (sh.instrument_id={:d} OR sh.instrument_id IS NULL)".format(instrument_id)
+            query = "SELECT sso.ssobject_id,sso.desig_number,sh.last_searched FROM ssobjects AS sso LEFT OUTER JOIN search_history AS sh ON sso.ssobject_id=sh.ssobject_id AND (sh.instrument_id={:d} OR sh.instrument_id IS NULL) WHERE sso.desig_number IS NOT NULL AND sso.object_type='asteroid'".format(instrument_id)
             mcd.output_log_entry(path_logfile,query)
             cursor.execute(query)
             rows = cursor.fetchall()
