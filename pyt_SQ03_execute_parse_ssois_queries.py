@@ -159,13 +159,16 @@ def parse_ssois_results_file(path_queryresults,ssois_search_result_filepath,pars
         objectname = ssois_search_result_filepath[-29:-22]
         with open(ssois_search_result_filepath) as df:
             found_main_content,found_link,found_datetime,found_filter,found_exptime,found_ra,found_dec,found_target,found_telinst = False,False,False,False,False,False,False,False,False
+            last_decam_file_string = ''
             no_images_found = False
             #rownum,newrow_rownum = 0,0
             for line in df:
                 line_done = False
-                if len(line) > 43:
-                    if line[12:44] == '<!-- MAIN CONTENT begins here-->':
-                        found_main_content = True
+                #if len(line) > 43:
+                #    if line[12:44] == '<!-- MAIN CONTENT begins here-->':
+                if not found_start_main_content and len(line) > 50:
+                    if line[0:30] == '<div class="table-responsive">':
+                        found_main_content = True                        
                 if found_main_content and not found_link and not line_done and not no_images_found:
                     if line[0:12] == '<td><a href=' or line[0:27] == '<td><a rel="external" href=':
                         image_link,char_idx = '',0
@@ -173,9 +176,15 @@ def parse_ssois_results_file(path_queryresults,ssois_search_result_filepath,pars
                             while line[13+char_idx] != "'":
                                 image_link = image_link + line[13+char_idx]
                                 char_idx += 1
+                            while line[13+char_idx+2:13+char_idx+6] != '</a>':
+                                file_name = file_name + line[13+char_idx+2]
+                                char_idx += 1
                         elif line[0:27] == '<td><a rel="external" href=':
                             while line[28+char_idx] != "'":
                                 image_link = image_link + line[28+char_idx]
+                                char_idx += 1
+                            while line[28+char_idx+2:28+char_idx+6] != '</a>':
+                                file_name = file_name + line[28+char_idx+2]
                                 char_idx += 1
                         mcd.output_log_entry(path_logfile,'   -- Image link found: {:s}'.format(image_link))
                         found_link = True
@@ -251,9 +260,21 @@ def parse_ssois_results_file(path_queryresults,ssois_search_result_filepath,pars
                         line_done = True
                 if found_telinst and line[0:5] == '</tr>' and not line_done and not no_images_found:
                     found_link,found_datetime,found_filter,found_exptime,found_ra,found_dec,found_target,found_telinst = False,False,False,False,False,False,False,False
-                    with open(parsed_ssois_results_filename,'a') as parsed_ssois_results_file:
-                        parsed_ssois_results_file.write('{:>10s}  {:<10s} {:<12s}  {:<10s}  {:7.1f}  {:10.6f}  {:10.6f}  {:<30s}  {:<20s}  {:s}\n'.format(objectname,date,time,filter_name,float(exptime),float(rightasc),float(declination),target,telinst,image_link))
-                        mcd.output_log_entry(path_logfile,'{:>10s}  {:<10s} {:<12s}  {:<10s}  {:7.1f}  {:10.6f}  {:10.6f}  {:<30s}  {:<20s}'.format(objectname,date,time,filter_name,float(exptime),float(rightasc),float(declination),target,telinst))
+                    if telinst == 'CTIO-4m/DECam':
+                        if image_link[:33] == 'https://astroarchive.noirlab.edu/' and file_name[:4] == 'c4d_':
+                            if file_name[18:21] == 'ooi':
+                                decam_file_string = file_name[:24]
+                                if decam_file_string != last_decam_file_string:
+                                    with open(parsed_ssois_results_filename,'a') as parsed_ssois_results_file:
+                                        #parsed_ssois_results_file.write('Object        Date       Time          JD              Tel/Inst              Exptime    Filter         Rdist     Ddist  PhsA  TrAnm  Vmag  Tmag  Nmag   Target                          PsAng  PsAMV  OrbPl  RA        Dec        RA          Dec          RA_rate  Dec_rate  RAsigma   DECsigma  EclLon  EclLat  GlxLon  GlxLat  Image_Data_Link\n')
+                                        #parsed_ssois_results_file.write('{:>12s}  {:<10s} {:<12s}  {:14.6f}  {:<21s}  {:7.1f}  {:<10s}  {:8.3f}  {:8.3f}  {:4.1f}  {:5.1f}  {:4.1f}  {:4.1f}  {:4.1f}  {:<30s}  {:5.1f}  {:5.1f}  {:5.1f}  {:s}  {:s}  {:10.6f}  {:10.6f}  {:7.3f}  {:8.3f}  {:7.1f}  {:8.1f}  {:6.1f}  {:6.1f}  {:6.1f}  {:6.1f}  {:s} {:s}\n'.format(obj_desig,date,time,obs_datetime_mid.jd,telinst,float(exptime),filter_name,heliodist,geodist,phsang,trueanom,v_mag,t_mag,n_mag,target,sun_obj_pa,velocity_pa,orbpl_angle,ra_hms,dec_dms,float(rightasc),float(declination),ra_rate,dec_rate,ra_sigma,dec_sigma,ecllon,ecllat,glxlon,glxlat,file_name,image_link))
+                                        parsed_ssois_results_file.write('{:>10s}  {:<10s} {:<12s}  {:<10s}  {:7.1f}  {:10.6f}  {:10.6f}  {:<30s}  {:<20s}  {:s} {:s}\n'.format(objectname,date,time,filter_name,float(exptime),float(rightasc),float(declination),target,telinst,file_name,image_link))
+                                        mcd.output_log_entry(path_logfile,'{:>10s}  {:<10s} {:<12s}  {:<10s}  {:7.1f}  {:10.6f}  {:10.6f}  {:<30s}  {:<20s}  {:s} {:s}'.format(objectname,date,time,filter_name,float(exptime),float(rightasc),float(declination),target,telinst,file_name,image_link))
+                                last_decam_file_string = decam_file_string
+                    else:
+                        with open(parsed_ssois_results_filename,'a') as parsed_ssois_results_file:
+                            parsed_ssois_results_file.write('{:>10s}  {:<10s} {:<12s}  {:<10s}  {:7.1f}  {:10.6f}  {:10.6f}  {:<30s}  {:<20s}  {:s}\n'.format(objectname,date,time,filter_name,float(exptime),float(rightasc),float(declination),target,telinst,image_link))
+                            mcd.output_log_entry(path_logfile,'{:>10s}  {:<10s} {:<12s}  {:<10s}  {:7.1f}  {:10.6f}  {:10.6f}  {:<30s}  {:<20s}  {:s}'.format(objectname,date,time,filter_name,float(exptime),float(rightasc),float(declination),target,telinst,image_link))
                     line_done = True
                     found_link,found_datetime,found_filter,found_exptime,found_ra,found_dec,found_target,found_telinst = False,False,False,False,False,False,False,False
                 # Identify asteroids for which no matching images were found
