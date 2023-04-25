@@ -38,20 +38,14 @@ def main():
         
         if not os.path.isfile(telescope_file):
             mcd.output_log_entry(path_logfile,'Telescope data file {:s} not found.'.format(telescope_file))
-            #print('{:s} - Telescope data file {:s} not found.'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),telescope_file))
-            #log_file.write('{:s} - Telescope data file {:s} not found.\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),telescope_file))
             mcd.send_status_email('DB02_add_telinsts execution failed','{:s} - DB02_add_telinsts execution failed - Telescope data file {:s} not found.'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),telescope_file))
             keep_going = False
         if not os.path.isfile(instrument_file):
             mcd.output_log_entry(path_logfile,'Instrument data file {:s} not found.'.format(instrument_file))
-            #print('{:s} - Instrument data file {:s} not found.'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),instrument_file))
-            #log_file.write('{:s} - Instrument data file {:s} not found.\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),instrument_file))
             mcd.send_status_email('DB02_add_telinsts execution failed','{:s} - DB02_add_telinsts execution failed - Instrument data file {:s} not found.'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),instrument_file))
             keep_going = False
         if not os.path.isfile(mosaicelems_file):
             mcd.output_log_entry(path_logfile,'Mosaic elements data file {:s} not found.'.format(mosaicelems_file))
-            #print('{:s} - Mosaic elements data file {:s} not found.'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),mosaicelems_file))
-            #log_file.write('{:s} - Mosaic elements data file {:s} not found.\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),mosaicelems_file))
             mcd.send_status_email('DB02_add_telinsts execution failed','{:s} - DB02_add_telinsts execution failed - Mosaic elements data file {:s} not found.'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),mosaicelems_file))
             keep_going = False
     
@@ -70,30 +64,19 @@ def main():
                     query = "SELECT telescope_id FROM telescopes WHERE telescope_name='{:s}'".format(telescope_data[0])
                     cursor.execute(query)
                     mcd.output_log_entry(path_logfile,'QUERY: {:s}'.format(query))
-                    #cursor.execute("SELECT telescope_id FROM telescopes WHERE telescope_name='{:s}'".format(telescope_data[0]))
                     row = cursor.fetchone()
                     if row == None: # If no telescope entry exists, add new entry
                         query = "INSERT INTO telescopes(telescope_name,observatory_code,aperture_size,latitude,longitude,elevation) VALUES ('{:s}','{:s}',{:5.2f},{:9.5f},{:9.5f},{:7.1f})".format(telescope_data[0],telescope_data[1],float(telescope_data[2]),float(telescope_data[3]),float(telescope_data[4]),float(telescope_data[5]))
                         cursor.execute(query)
                         mcd.output_log_entry(path_logfile,'QUERY: {:s}'.format(query))
-                        #cursor.execute("INSERT INTO telescopes(telescope_name,observatory_code,aperture_size,latitude,longitude,elevation) VALUES ('{:s}','{:s}',{:5.2f},{:9.5f},{:9.5f},{:7.1f})".format(telescope_data[0],telescope_data[1],float(telescope_data[2]),float(telescope_data[3]),float(telescope_data[4]),float(telescope_data[5])))
-                        #log_file.write("{:s} - QUERY: INSERT INTO telescopes(telescope_name,observatory_code,aperture_size,latitude,longitude,elevation) VALUES ('{:s}','{:s}',{:5.2f},{:9.5f},{:9.5f},{:7.1f})\n".format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),telescope_data[0],telescope_data[1],float(telescope_data[2]),float(telescope_data[3]),float(telescope_data[4]),float(telescope_data[5])))
                         mcd.output_log_entry(path_logfile,'Telescope data added for {:s}...'.format(telescope_data[0]))
-                        #print('{:s} - Telescope data added for {:s}...'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),telescope_data[0]))
-                        #log_file.write('{:s} - Telescope data added for {:s}...\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),telescope_data[0]))
                     else:
                         query = "UPDATE telescopes SET observatory_code='{:s}',aperture_size={:5.2f},latitude={:9.5f},longitude={:9.5f},elevation={:7.1f} WHERE telescope_name='{:s}'".format(telescope_data[1],float(telescope_data[2]),float(telescope_data[3]),float(telescope_data[4]),float(telescope_data[5]),telescope_data[0])
                         cursor.execute(query)
                         mcd.output_log_entry(path_logfile,'QUERY: {:s}'.format(query))
-                        #cursor.execute("UPDATE telescopes SET observatory_code='{:s}',aperture_size={:5.2f},latitude={:9.5f},longitude={:9.5f},elevation={:7.1f} WHERE telescope_name='{:s}'".format(telescope_data[1],float(telescope_data[2]),float(telescope_data[3]),float(telescope_data[4]),float(telescope_data[5]),telescope_data[0]))
-                        #log_file.write("{:s} - UPDATE telescopes SET observatory_code='{:s}',aperture_size={:5.2f},latitude={:9.5f},longitude={:9.5f},elevation={:7.1f} WHERE telescope_name='{:s}'\n".format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),telescope_data[1],float(telescope_data[2]),float(telescope_data[3]),float(telescope_data[4]),float(telescope_data[5]),telescope_data[0]))
                         mcd.output_log_entry(path_logfile,'Telescope data updated for {:s}...'.format(telescope_data[0]))
-                        #print('{:s} - Telescope data updated for {:s}...'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),telescope_data[0]))
-                        #log_file.write('{:s} - Telescope data updated for {:s}...\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),telescope_data[0]))
                     line_count += 1
         mcd.output_log_entry(path_logfile,'>>> Telescope data added/updated.')
-        #print('{:s} - >>> Telescope data added/updated.'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')))
-        #log_file.write('{:s} - >>> Telescope data added/updated.\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')))
 
         with open(instrument_file) as csv_file:
             csv_reader = csv.reader(csv_file,delimiter=',')
@@ -105,43 +88,32 @@ def main():
                     instrument_name = instrument_data[0]
                     telescope_name  = instrument_data[1]
                     # Check if corresponding telescope listed for instrument is in telescope table
-                    cursor.execute("SELECT telescope_id FROM telescopes WHERE telescope_name='{:s}'".format(telescope_name))
+                    query = "SELECT telescope_id FROM telescopes WHERE telescope_name='{:s}'".format(telescope_name)
+                    cursor.execute(query)
+                    mcd.output_log_entry(path_logfile,'QUERY: {:s}'.format(query))
                     row = cursor.fetchone()
                     if row == None:
                         mcd.output_log_entry(path_logfile,"Telescope '{:s}' for instrument '{:s}' not found.".format(telescope_name,instrument_name))
-                        #print("{:s} - Telescope '{:s}' for instrument '{:s}' not found!".format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),telescope_name,instrument_name))
-                        #log_file.write("{:s} - Telescope '{:s}' for instrument '{:s}' not found!\n".format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),telescope_name,instrument_name))
                     else:
                         telescope_id = row[0]
                         # If telescope is found, check if instrument entry exists
                         query = "SELECT instrument_id FROM instruments WHERE instrument_name='{:s}' and telescope_id={:d}".format(instrument_name,telescope_id)
                         cursor.execute(query)
                         mcd.output_log_entry(path_logfile,'QUERY: {:s}'.format(query))
-                        #cursor.execute("SELECT instrument_id FROM instruments WHERE instrument_name='{:s}' and telescope_id={:d}".format(instrument_name,telescope_id))
                         row = cursor.fetchone()
                         if row == None: # If no instrument entry exists, add new entry
                             query = "INSERT INTO instruments(telescope_id,instrument_name) VALUES ({:d},'{:s}')".format(telescope_id,instrument_name)
                             cursor.execute(query)
                             mcd.output_log_entry(path_logfile,'QUERY: {:s}'.format(query))
-                            #cursor.execute("INSERT INTO instruments(telescope_id,instrument_name) VALUES ({:d},'{:s}')".format(telescope_id,instrument_name))
-                            #log_file.write("{:s} - QUERY: INSERT INTO instruments(telescope_id,instrument_name) VALUES ({:d},'{:s}')\n".format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),telescope_id,instrument_name))
                             mcd.output_log_entry(path_logfile,'Instrument data added for {:s}...'.format(instrument_name))
-                            #print('{:s} - Instrument data added for {:s}...'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),instrument_name))
-                            #log_file.write('{:s} - Instrument data added for {:s}...\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),instrument_name))
                         else: # If instrument entry exists, update entry
                             instrument_id = row[0]
                             query = "UPDATE instruments SET telescope_id={:d},instrument_name='{:s}' WHERE instrument_id={:d}".format(telescope_id,instrument_name,instrument_id)
                             cursor.execute(query)
                             mcd.output_log_entry(path_logfile,'QUERY: {:s}'.format(query))
-                            #cursor.execute("UPDATE instruments SET telescope_id={:d},instrument_name='{:s}' WHERE instrument_id={:d}".format(telescope_id,instrument_name,instrument_id))
-                            #log_file.write("{:s} - QUERY: UPDATE instruments SET telescope_id={:d},instrument_name='{:s}' WHERE instrument_id={:d}\n".format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),telescope_id,instrument_name,instrument_id))
                             mcd.output_log_entry(path_logfile,'Instrument data updated for {:s}...'.format(instrument_name))
-                            #print('{:s} - Instrument data updated for {:s}...'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),instrument_name))
-                            #log_file.write('{:s} - Instrument data updated for {:s}...\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),instrument_name))
                     line_count += 1
         mcd.output_log_entry(path_logfile,'>>> Instrument data added/updated.')
-        #print('{:s} - >>> Instrument data added/updated.'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')))
-        #log_file.write('{:s} - >>> Instrument data added/updated.\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')))
 
         with open(mosaicelems_file) as csv_file:
             csv_reader = csv.reader(csv_file,delimiter=',')
@@ -163,58 +135,38 @@ def main():
                     query = "SELECT inst.instrument_id FROM instruments AS inst INNER JOIN telescopes AS tel ON inst.telescope_id=tel.telescope_id WHERE inst.instrument_name='{:s}' and tel.telescope_name='{:s}'".format(instrument_name,telescope_name)
                     cursor.execute(query)
                     mcd.output_log_entry(path_logfile,'QUERY: {:s}'.format(query))
-                    #cursor.execute("SELECT inst.instrument_id FROM instruments AS inst INNER JOIN telescopes AS tel ON inst.telescope_id=tel.telescope_id WHERE inst.instrument_name='{:s}' and tel.telescope_name='{:s}'".format(instrument_name,telescope_name))
                     row = cursor.fetchone()
                     if row == None:
                         mcd.output_log_entry(path_logfile,"Instrument '{:s}' on telescope '{:s}' not found.".format(instrument_name,telescope_name))
-                        #print("{:s} - Instrument '{:s}' on telescope '{:s}' not found!".format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),instrument_name,telescope_name))
-                        #log_file.write("{:s} - Instrument '{:s}' on telescope '{:s}' not found!\n".format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),instrument_name,telescope_name))
                     else:
                         instrument_id = row[0]
                         # If telescope and instrument are found, check if mosaic entry exists
                         query = "SELECT mosaic_element_id FROM mosaic_elements WHERE mosaic_element_num={:d} AND instrument_id={:d}".format(mosaic_element_num,instrument_id)
                         cursor.execute(query)
                         mcd.output_log_entry(path_logfile,'QUERY: {:s}'.format(query))
-                        #cursor.execute("SELECT mosaic_element_id FROM mosaic_elements WHERE mosaic_element_num={:d} AND instrument_id={:d}".format(mosaic_element_num,instrument_id))
                         row = cursor.fetchone()
                         if row == None: # If no mosaic element entry exists, add new entry
                             query = "INSERT INTO mosaic_elements(instrument_id,mosaic_element_num,gain,read_noise,npix_x,npix_y,pixel_scale_x,pixel_scale_y) VALUES ({:d},{:d},{:f},{:f},{:d},{:d},{:f},{:f})".format(instrument_id,mosaic_element_num,gain,read_noise,npix_x,npix_y,pixel_scale_x,pixel_scale_y)
                             cursor.execute(query)
                             mcd.output_log_entry(path_logfile,'QUERY: {:s}'.format(query))
-                            #cursor.execute("INSERT INTO mosaic_elements(instrument_id,mosaic_element_num,gain,read_noise,npix_x,npix_y,pixel_scale_x,pixel_scale_y) VALUES ({:d},{:d},{:f},{:f},{:d},{:d},{:f},{:f})".format(instrument_id,mosaic_element_num,gain,read_noise,npix_x,npix_y,pixel_scale_x,pixel_scale_y))
-                            #log_file.write("{:s} - QUERY: INSERT INTO mosaic_elements(instrument_id,mosaic_element_num,gain,read_noise,npix_x,npix_y,pixel_scale_x,pixel_scale_y) VALUES ({:d},{:d},{:f},{:f},{:d},{:d},{:f},{:f})\n".format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),instrument_id,mosaic_element_num,gain,read_noise,npix_x,npix_y,pixel_scale_x,pixel_scale_y))
                             mcd.output_log_entry(path_logfile,"Mosaic element data added for Element {:d} of the {:s} instrument...".format(mosaic_element_num,instrument_name))
-                            #print('{:s} - Mosaic element data added for Element {:d} of the {:s} instrument...'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),mosaic_element_num,instrument_name))
-                            #log_file.write('{:s} - Mosaic element data added for Element {:d} of the {:s} instrument...\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),mosaic_element_num,instrument_name))
                         else: # If mosaic element entry exists, update entry
                             mosaic_element_id = row[0]
                             query = "UPDATE mosaic_elements SET instrument_id='{:d}',mosaic_element_num='{:d}',gain={:f},read_noise={:f},npix_x={:d},npix_y={:d},pixel_scale_x={:f},pixel_scale_y={:f} WHERE mosaic_element_id={:d}".format(instrument_id,mosaic_element_num,gain,read_noise,npix_x,npix_y,pixel_scale_x,pixel_scale_y,mosaic_element_id)
                             cursor.execute(query)
                             mcd.output_log_entry(path_logfile,'QUERY: {:s}'.format(query))
-                            #cursor.execute("UPDATE mosaic_elements SET instrument_id='{:d}',mosaic_element_num='{:d}',gain={:f},read_noise={:f},npix_x={:d},npix_y={:d},pixel_scale_x={:f},pixel_scale_y={:f} WHERE mosaic_element_id={:d}".format(instrument_id,mosaic_element_num,gain,read_noise,npix_x,npix_y,pixel_scale_x,pixel_scale_y,mosaic_element_id))
-                            #log_file.write("{:s} - QUERY: UPDATE mosaic_elements SET instrument_id='{:d}',mosaic_element_num='{:d}',gain={:f},read_noise={:f},npix_x={:d},npix_y={:d},pixel_scale_x={:f},pixel_scale_y={:f} WHERE mosaic_element_id={:d}\n".format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),instrument_id,mosaic_element_num,gain,read_noise,npix_x,npix_y,pixel_scale_x,pixel_scale_y,mosaic_element_id))
                             mcd.output_log_entry(path_logfile,"Mosaic element data updated for Element {:d} of the {:s} instrument...".format(mosaic_element_num,instrument_name))
-                            #print('{:s} - Mosaic element data updated for Element {:d} of the {:s} instrument...'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),mosaic_element_num,instrument_name))
-                            #log_file.write('{:s} - Mosaic element data updated for Element {:d} of the {:s} instrument...\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S'),mosaic_element_num,instrument_name))
                     line_count += 1
                     
         mcd.output_log_entry(path_logfile,">>> Mosaic element data added/updated.")
-        #print('{:s} - >>> Mosaic element data added/updated.'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')))
-        #log_file.write('{:s} - >>> Mosaic element data added/updated.\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')))
         
         # Committing changes and closing the connection to the database file
         conn.commit()
         conn.close()
         mcd.output_log_entry(path_logfile,">>> Database closed.")
-        #print('{:s} - >>> Database closed.'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')))
-        #log_file.write('{:s} - >>> Database closed.\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')))
 
         mcd.send_status_email('DB02_add_telinsts execution complete','{:s} - DB02_add_telinsts execution complete.'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     
-    #with open(path_logfile,'a') as log_file:
-    #    print('{:s} - Done.'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')))
-    #    log_file.write('{:s} - Done.\n'.format(datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')))
-            
     return None
 
 
