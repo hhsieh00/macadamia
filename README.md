@@ -9,7 +9,7 @@ Overview
 --------
 
 This python code uses the Canadian Astronomy Data Centre's Solar System Object Image Search (SSOIS) tool to search
-for detections of known asteroids (and comets) in archival data, downloads the relevant data, and returns
+for detections of a specified known asteroid (or comet) in archival data, downloads the relevant data, and returns
 photometry of those detections.
 
 At the present time, only SDSS, CFHT/MegaCam, and Blanco/DECam archival data are supported, but adding additional
@@ -199,3 +199,11 @@ Caveats
    uncertainty at the time of a particular archival observation or is incorrect (e.g., due to un-accounted-for
    non-gravitational effects or spurious astrometry data being used to compute its orbit), it may not be found, or
    may be mis-identified (i.e., associated with an incorrect field source).
+
+
+---------------
+Additional Code
+---------------
+
+Additional files provided in this repository are for carrying out the coordinated bulk processing of archival data (e.g., for all numbered asteroids).  Documentation for these files will be forthcoming in the near future.
+
