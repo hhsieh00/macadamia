@@ -126,10 +126,10 @@ Requirements
    located in the same location as the data processing, just the filename needs to be specified, but otherwise,
    the entire filepath should be specified.
 
-2. A local installation of fpack and funpack (https://heasarc.gsfc.nasa.gov/fitsio/fpack/).  Paths to these
+2. A local installation of `fpack` and `funpack` (https://heasarc.gsfc.nasa.gov/fitsio/fpack/).  Paths to these
    commands should be specified in the user configuration file.
 
-3. A local installation of the refcat search tool and catalog data (https://archive.stsci.edu/hlsp/atlas-refcat2).
+3. A local installation of the `refcat` search tool and catalog data (https://archive.stsci.edu/hlsp/atlas-refcat2).
    Paths to the search program and catalogs should be specified in the user configuration file.
 
 
