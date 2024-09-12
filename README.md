@@ -1,7 +1,7 @@
 # MACADAMIA Archival Photometry
 
 - MACADAMIA: Multi-Archive Catalog of Asteroid Detections And Measurements for Interactive Access
-- written by Henry H. Hsieh (hhsieh@psi.edu / hhsieh@gmail.com), 2024-09-12
+- written by Henry H. Hsieh (`hhsieh@psi.edu` / `hhsieh@gmail.com`), 2024-09-12
 
 
 --------
@@ -59,61 +59,61 @@ Output
 The code produces a number of output files that are automatically sorted into various folders.  The organizational
 structure of these folders and specific output files are as follows:
 
-1. A folder containing all searches for a given object named "archival_search_OBJECTNAME" in the specified base
+1. A folder containing all searches for a given object named "`archival_search_OBJECTNAME`" in the specified base
    directory.  Searches for different instruments and/or at different times will all be placed in this folder.
 
-2. Individual folders for specific telescopes and/or instruments and search time periods named
-   "TELESCOPE_STARTSEARCHDATE_ENDSEARCHDATE" in each object folder.
+2. Individual folders for specific telescopes, search start date, and search end date named
+   "`TELESCOPE_YYYYMMDD_YYYYMMDD`" in each object folder.
 
-3. A file named log_archival_photometry_YYYYMMDD_HHMMSS.txt logging various processing data for each run of this
+3. A file named `log_archival_photometry_YYYYMMDD_HHMMSS.txt` logging various processing data for each run of this
    code.
 
-4. A file named ssois_results_TARGETNAME_YYYYMMDD_YYYYMMDD.txt: a table of SSOIS search results
+4. A file named `ssois_results_TARGETNAME_YYYYMMDD_YYYYMMDD.txt`: a table of SSOIS search results
 
-5. A file named ssois_results_TARGETNAME_YYYYMMDD_YYYYMMDD_ephems.txt: a table of SSOIS search results with
+5. A file named `ssois_results_TARGETNAME_YYYYMMDD_YYYYMMDD_ephems.txt`: a table of SSOIS search results with
    additional observational geometry data, including expected magnitudes according to Horizons, to aid in manual
    identification of usable data.
 
-6. Original downloaded FITS files (compressed using fpack), located in a sub-folder named "data_files_orig".
+6. Original downloaded FITS files (compressed using `fpack`), located in a sub-folder named "`data_files_orig`".
 
 7. Extracted extension data containing the predicted positions of the target object (as FITS files compressed using
-   fpack), located in a sub-folder named "data_files_ext_wcs", where the extension number NN of each extension is
-   recorded in each FITS file's filename (i.e., *_NN_wcs.fits.fz).
+   `fpack`), located in a sub-folder named "`data_files_ext_wcs`", where the extension number NN of each extension is
+   recorded in each FITS file's filename (i.e., `*_NN_wcs.fits.fz`).
 
 8. Background-subtracted extension data containing the predicted positions of the target object (as FITS files
-   compressed using fpack) that were used for aperture photometry, located in a sub-folder named
-   "data_files_ext_wcs_bgsub"
+   compressed using `fpack`) that were used for aperture photometry, located in a sub-folder named
+   "`data_files_ext_wcs_bgsub`"
 
-9. Various files pertaining to field source photometry, located in a sub-folder named "field_source_photometry".
+9. Various files pertaining to field source photometry, located in a sub-folder named "`field_source_photometry`".
    Included files include files following the formats of (where prefixes for all of these files indicate the
    corresponding image file):
    
-   *.field_source_photometry.txt: x,y and RA,Dec coordinates, fluxes, signal-to-noise ratios, and computed
+   `*.field_source_photometry.txt`: x,y and RA,Dec coordinates, fluxes, signal-to-noise ratios, and computed
    				  magnitudes of field sources)
 
-   *.zeropoint_histogram?.pdf: histogram plots of zeropoints corresponding to each field source used for absolute
+   `*.zeropoint_histogram?.pdf`: histogram plots of zeropoints corresponding to each field source used for absolute
                                photometric calibration, where histogram1 plots show the initial distribution of
 			       calculated zeropoints and histogram2 plots show the distribution of calculated
 			       zeropoints after outlier rejection (which is the distribution used to compute the
 			       final zeropoint of each image)
 
-   *.field_source_apertures.pdf: plots of each image with circles around detected field sources
+   `*.field_source_apertures.pdf`: plots of each image with circles around detected field sources
 
-   *.field_sources.txt: x,y and RA,Dec coordinates of detected field sources
+   `*.field_sources.txt`: x,y and RA,Dec coordinates of detected field sources
 
-   *.refcat_calib_stars.txt: table of field sources matched to Refcat2 catalog reference stars with catalogued
+   `*.refcat_calib_stars.txt`: table of field sources matched to Refcat2 catalog reference stars with catalogued
                              magnitudes in Pan-STARRS1 filters, and computed equivalent magnitudes in SDSS and
 			     Johnson-Cousins broadband filters)
 
-10. Various files pertaining to target photometry, located in a sub-folder named "target_photometry". Included files
+10. Various files pertaining to target photometry, located in a sub-folder named "`target_photometry`". Included files
     include files following the formats of:
 
-    *.target_candidate_sources.txt: x,y and RA/Dec coordinates of detected target candidate sources
+    `*.target_candidate_sources.txt`: x,y and RA/Dec coordinates of detected target candidate sources
 
-    *.target_ap*arcsec.pdf: plots of each image with circles around target detections showing the photometry
+    `*.target_ap*arcsec.pdf`: plots of each image with circles around target detections showing the photometry
                             aperture and annuli used to measure the sky background
 
-    target_phot_results.ap*arcsec.txt: tables of detection metadata and output photometry for all usable images
+    `target_phot_results.ap*arcsec.txt`: tables of detection metadata and output photometry for all usable images
                                        found by SSOIS and have had photometry successfully measured
 
 
@@ -121,7 +121,7 @@ structure of these folders and specific output files are as follows:
 Requirements
 ------------
 
-1. A user-customized configuration file (named macadamia.cfg in the example file provided here) specifying file
+1. A user-customized configuration file (named `macadamia.cfg` in the example file provided here) specifying file
    paths to certain required local installations of external software tools.  If this configuration file is
    located in the same location as the data processing, just the filename needs to be specified, but otherwise,
    the entire filepath should be specified.
@@ -139,9 +139,9 @@ Usage
 
 The code can be run from the command line as follows:
 
-python3 macadamia_archival_photometry.py BASE_PATH macadamia.cfg TARGET_NAME TELESCOPE
+`python3 macadamia_archival_photometry.py BASE_PATH macadamia.cfg TARGET_NAME TELESCOPE`
 
-where the currently supported values for TELESCOPE are "SDSS", "CFHT/MegaCam", and "CTIO-4m/DECam"
+where the currently supported values for TELESCOPE are `SDSS`, `CFHT/MegaCam`, and `CTIO-4m/DECam`
 (case-sensitive).  Additional optional parameters can be specified as follows:
 
     -start_date             (start date for SSOIS search)
@@ -157,7 +157,7 @@ where the currently supported values for TELESCOPE are "SDSS", "CFHT/MegaCam", a
     -tskyin [float]         (inner sky annulus radius for target photometry in arcsec)
     -tskyout [float]        (outer sky annulus radius for field source photometry in arcsec)
 
-All downloaded data and photometry output will be placed in sub-folders under BASE_PATH so users should make
+All downloaded data and photometry output will be placed in sub-folders under `BASE_PATH` so users should make
 sure that sufficient disk space for downloaded data is available at that path.  If no start and end dates are
 specified for SSOIS searches, these dates will be set to 1990-01-01 and the current date, respectively.
 
@@ -175,10 +175,10 @@ and ssois_results* files to reflect the current date.
 
 There is currently no mechanism for resuming processing of data files interrupted mid-way through a given
 multi-extension file (i.e., re-processing will always begin with the first extension).  If entire files have
-already been processed, however, or the user wishes to skip certain files due to the ssois_results_*_ephems.txt
+already been processed, however, or the user wishes to skip certain files due to the `ssois_results_*_ephems.txt`
 file indicating that the file is unlikely to contain usable data (e.g., the object is excessively faint at the
-time), these can be deleted from the ssois_results*.txt file, which will lead the code to omit them from
-processing.  In these cases, we recommend that the user saves a copy of the original ssois_results_*.txt file in
+time), these can be deleted from the `ssois_results*.txt` file, which will lead the code to omit them from
+processing.  In these cases, we recommend that the user saves a copy of the original `ssois_results_*.txt` file in
 case they wish to revisit those omitted files.
 
 Photometry will only be conducted for images using SDSS or Johnson-Cousins filters.  While images using certain
