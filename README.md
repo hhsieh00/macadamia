@@ -205,5 +205,9 @@ Caveats
 Additional Code
 ---------------
 
-Additional files provided in this repository are for carrying out the coordinated bulk processing of archival data (e.g., for all numbered asteroids).  Documentation for these files will be forthcoming in the near future.
+Additional files provided in this repository contain old code (circa 2020) for carrying out the coordinated bulk
+processing of archival data (i.e., for all numbered asteroids).  As of 2024-09-12, the plan is for documentation
+for these files to be provided as well in the near future, but there may also be substantial re-design of the bulk
+processing process to prioritize ease of use, so documentation for bulk processing code may not be provided until
+after that re-design takes place.
 
