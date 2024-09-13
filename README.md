@@ -2,7 +2,7 @@
 
 - MACADAMIA: Multi-Archive Catalog of Asteroid Detections And Measurements for Interactive Access
 - written by Henry H. Hsieh (`hhsieh@psi.edu` / `hhsieh@gmail.com`), 2024-09-12
-
+- This work was supported by NASA grant NNX17AL01G
 
 --------
 Overview
